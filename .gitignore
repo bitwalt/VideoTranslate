@@ -1,0 +1,10 @@
+output/
+*.json
+*.DS_Store
+*.mp4
+*.txt
+*.log
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*$py.class
