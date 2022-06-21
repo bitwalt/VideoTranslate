@@ -13,14 +13,18 @@ Repository with helper functions for translating videos from one language to ano
 
 ### Installation
 
-An installation Poetry is required. [Poetry](https://python-poetry.org/) is a tool for dependency management and packaging in Python. Take a look to [installations](https://python-poetry.org/docs/#osx--linux--bashonwindows-install-instructions).
+An installation of Poetry is required. [Poetry](https://python-poetry.org/) is a tool for dependency management and packaging in Python. Take a look to [installations](https://python-poetry.org/docs/#osx--linux--bashonwindows-install-instructions).
+
+For OSx / linux / bashonwindows install:
+```bash
+$ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+```
 
 Dependencies used:
 - [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api)
 - [pytube](https://github.com/pytube/pytube)
 
-Install dependencies with 
-
+Install dependencies with:
 ```bash
 $ poetry install
 ```
