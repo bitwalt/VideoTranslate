@@ -1,7 +1,31 @@
-# Youtube Translator
+# Video Translator
 
 
 Repository with helper functions for translating videos from one language to another.
+
+## Screenshot
+
+
+
+## Possible Outputs
+
+{
+  "original_video: .mp4    -> Download video from url (youtube converter) or other libraries,
+  "original_captions_text": str -> Download caption from url or use Speech2Text AI model,
+  "original_audio": .mp3   -> Download from url or other libraries,              
+  "translated_video_captions: .mp4" -> Video file with translated captions overwritten,
+  "translated_video: .mp4" -> Video file with new generated audio translated from original,
+  "translated_captions: str" -> New translated captions
+  "translated_audio: mp3", -> Translate audio using S2T -> Transltor -> T2S
+}
+## Run
+
+Using python environment (Docker in program)
+```
+$ pip install -r requirements.txt
+$ streamlit run start_stramlit.py
+```
+
 
 
 ## Features
@@ -32,7 +56,9 @@ $ poetry install
 
 Modify the `config.json` file to set the correct values for the following parameters:
 - `videos`: Youtube video IDs and video names
-- `formatter`: Formatter for the captions. Possible values: `json` (with video timeslots reference) `txt` (full-text)
+- `formatter`: Formatter for the captions.
+    - `json` (with video timeslots reference)
+    - `txt` (full-text)
 - `output_folder`: Folder where the captions or videos will be saved.
 - `language_from`: Language of the captions. 
 - `language_from`: Translation language.
@@ -46,7 +72,7 @@ $ poetry run python main.py
 
 ### TODO
 - [ ] Use pre-trained AI model insted of *youtube_transcript_api* to translate video captions. 
-  Options: local environment (cpu) /  calling cloud-services API.
+  Options: local environment (CPU) / cloud-services API, P2P GPU power.
 
 - [ ]  Try to generate a speech for translated captions using *Text2Speech* models.
     *References:* [DeepSpeech-Italian-Model](https://github.com/MozillaItalia/DeepSpeech-Italian-Model), [Woord](https://www.getwoord.com/),
