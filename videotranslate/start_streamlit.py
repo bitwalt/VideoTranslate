@@ -33,8 +33,7 @@ st.sidebar.subheader("Ouput")
 #  ==== INPUT ====
 
 if input_video == "Url":
-    # st.write("Example: https://www.youtube.com/watch?v=KG0Q05Lnm7s")
-    video_url = st.text_input("Insert video url here", )
+    video_url = st.text_input("Insert video url here", value="https://www.youtube.com/watch?v=KG0Q05Lnm7s")
 else: 
     video_file = st.file_uploader("Upload Video",type=['mp4', 'avi'])
 
