@@ -2,9 +2,20 @@
 
 
 Repository with helper functions for translating videos from one language to another.
+Providing a stramlit UI with a web toolkit for downloading, translating, transcribing, generating video. 
+Created to disseminate educational resources on bitcoin.
 
 ## Screenshot
 
+![ScreenShot](https://raw.github.com/waltermaffy/VideoTranslate/main/videotranslate/static/screenshot.png)
+
+## Run
+
+Using python environment (Docker in future)
+```
+$ pip install -r requirements.txt
+$ streamlit run start_stramlit.py
+```
 
 
 ## Possible Outputs
@@ -18,14 +29,8 @@ Repository with helper functions for translating videos from one language to ano
   "translated_captions: str" -> New translated captions
   "translated_audio: mp3", -> Translate audio using S2T -> Transltor -> T2S
 }
-## Run
 
-Using python environment (Docker in program)
-```
-$ pip install -r requirements.txt
-$ streamlit run start_stramlit.py
-```
-
+# Work in Progress -
 
 
 ## Features
