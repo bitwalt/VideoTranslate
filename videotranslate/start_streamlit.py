@@ -1,122 +1,54 @@
 import streamlit as st
-from PIL import Image
-import numpy as np
 from config import cfg, TRANSLATOR_MODELS, SP2_MODELS
+from extract_text import YoutubeTextExtractor
+from utils import is_from_youtube, get_youtube_id
 
 
-def language_selector():
-    src = st.sidebar.selectbox("From Language",['English','Italian'])
-    destination = st.sidebar.selectbox("To Language",['Italian','English'])
-    helper = {'Italian':'it','English':'en'}
-    dest = helper[destination]
-    source = helper[src]
-    return source, dest
-
-
-st.title("Bitcoin Video Translator")
-
-st.write("Web tool kit for downloading, translating, transcribing, generating video. "
-         "Created to disseminate educational resources on bitcoin." )
+#  ==== SIDEBAR ====
+        
 st.sidebar.title('Navigation Menu ⬇️')
 st.sidebar.subheader("Input")
-input_video = st.sidebar.radio('Select input video:', ["Url", "File"])
-
+input_video_type = st.sidebar.radio('Select input video:', ["Url", "File"])
 st.sidebar.subheader("Translator")
-trans_model = st.sidebar.radio('Select Model:', TRANSLATOR_MODELS)
 source, dest = st.sidebar.radio('Path:', ['en-it', 'it-en']).split("-")
+# trans_model = st.sidebar.radio('Select Model:', TRANSLATOR_MODELS)
+# st.sidebar.subheader("Speech2Text AI model")
+# s2t_model = st.sidebar.radio('Select Model', SP2_MODELS)
 
-st.sidebar.subheader("Speech2Text AI model")
-s2t_model = st.sidebar.radio('Select Model', SP2_MODELS)
-st.sidebar.subheader("Ouput")
-
+st.title("Video Translator")
+st.text("""Web tool kit for downloading, translating, transcribing, generating video""" )
 
 #  ==== INPUT ====
 
-if input_video == "Url":
-    video_url = st.text_input("Insert video url here", value="https://www.youtube.com/watch?v=KG0Q05Lnm7s")
+input_container = st.container()
+if input_video_type == "Url":
+    video_input = input_container.text_input("Insert video url here", value="https://www.youtube.com/watch?v=KG0Q05Lnm7s")
+    if video_input and is_from_youtube(video_input):
+        if input_container.button("Show"):
+            input_container.video(video_input)      
 else: 
-    video_file = st.file_uploader("Upload Video",type=['mp4', 'avi'])
+    video_input = st.file_uploader("Upload Video",type=['mp4', 'avi'])
 
-#  ==== OUTPUT ====
+st.subheader("Transcript and Translate")
+st.write("Extract and translate captions using youtube_transcript_api")
+formatter = st.selectbox("Select formatter: ", ["Text", "JSON"])
 
-options = st.multiselect(
-        'Select Options for this video', 
-        ['Show', 'Download', 'Transcript', 'Translate'])
+col1, col2 = st.columns(2)
 
-if st.button("Run"):
-    st.video(video_url)
-    
-    if st.button("Download"):
-        # TODO: Download video
-        st.video(video_url)
-
-
-def extract_captions(video):
-    raise NotImplementedError
-
-
-def translate(text):
-    pass
-
-#  if st.sidebar.button("Translate!"):
-#     if len(area)!=0:
-#         sour = translator.detect(area).lang
-        
-#         answer = translator.translate(area, src=f'{sour}', dest=f'{dst}').text
-#         #st.sidebar.text('Answer')
-#         st.sidebar.text_area("Answer",answer)
-#         st.balloons()
-#     else:
-#         st.sidebar.subheader('Enter Text!')    
-
-
-# st.set_option('deprecation.showfileUploaderEncoding',False)
-# st.title('AI OCR')
-# st.subheader('Optical Character Recognition with Voice output')
-# st.text('Select source Language from the Sidebar.')
-
-# image_file = st.file_uploader("Upload Image",type=['jpg','png','jpeg','JPG'])
-
-
-# text = "With property rights, free speech and a functioning legal system."
-# st.write(text)
-# if st.button("Translate"):
-#     result = translator.translate(text, dest='it')
-#     # result = translator.translate(text, src=f'{source}', dest=f'{dst}').text
-#     st.write(result)
-    
-    
-# if st.button("Convert"):
-    
-#     if image_file is not None:
-#         img = Image.open(image_file)
-#         img = np.array(img)
-        
-#         st.subheader('Image you Uploaded...')
-#         st.image(image_file,width=450)
-        
-#         if src=='English':
-#             with st.spinner('Extracting Text from given Image'):
-#                 eng_reader = easyocr.Reader(['en'])
-#                 detected_text = eng_reader.readtext(img)
-#             st.subheader('Extracted text is ...')
-#             text = display_text(detected_text)
-#             st.write(text)
-            
-
-#         elif src=='Italian':
-#             with st.spinner('Extracting Text from given Image'):
-#                 swahili_reader = easyocr.Reader(['it'])
-#                 detected_text = swahili_reader.readtext(img)
-#             st.subheader('Extracted text is ...')
-#             text = display_text(detected_text)
-#             st.write(text)
-              
-#         st.write('')
-#         ta_tts = gTTS(text,lang=f'{source}')
-#         ta_tts.save('trans.mp3')
-#         st.audio('trans.mp3',format='audio/mp3')
-        
+if input_video_type == "Url" and is_from_youtube(video_input):
+    video_id = get_youtube_id(video_input)
+    if st.button('Run'):     
+        with st.spinner('Extracting captions from given video'):
+            text_extractor = YoutubeTextExtractor(formatter)
+            transcript = text_extractor.get_transcript_from_id(video_id)    
+            if formatter == "JSON":
+                col1.json(transcript)
+            else:
+                col1.text_area('Text Transcription', transcript)          
+        with st.spinner('Translating captions from given video'):
+            translated_transcript = YoutubeTextExtractor.translate_from_id(video_id, source, dest)    
+            col2.json(translated_transcript)
+                    
 
 #         with st.spinner('Translating Text...'):
 #             result = translator.translate(text, src=f'{source}', dest=f'{dst}').text

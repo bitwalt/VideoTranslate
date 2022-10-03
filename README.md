@@ -1,8 +1,9 @@
 # Video Translator
 
-
 Repository with helper functions for translating videos from one language to another.
+
 Providing a stramlit UI with a web toolkit for downloading, translating, transcribing, generating video. 
+
 Created to disseminate educational resources on bitcoin.
 
 ## Screenshot
@@ -14,18 +15,18 @@ Created to disseminate educational resources on bitcoin.
 Using python environment (Docker in future)
 ```
 $ pip install -r requirements.txt
-$ streamlit run start_stramlit.py
+$ streamlit run start_streamlit.py
 ```
 
 
 ## Possible Outputs
 
-{
-  "original_video: .mp4    -> Download video from url (youtube converter) or other libraries,
-  "original_captions_text": str -> Download caption from url or use Speech2Text AI model,
-  "original_audio": .mp3   -> Download from url or other libraries,              
-  "translated_video_captions: .mp4" -> Video file with translated captions overwritten,
-  "translated_video: .mp4" -> Video file with new generated audio translated from original,
+
+-  "original_video: .mp4    -> Download video from url (youtube converter) or other libraries,
+-  "original_captions_text": str -> Download caption from url or use Speech2Text AI model,
+-  "original_audio": .mp3   -> Download from url or other libraries,              
+-  "translated_video_captions: .mp4" -> Video file with translated captions overwritten,
+-  "translated_video: .mp4" -> Video file with new generated audio translated from original,
   "translated_captions: str" -> New translated captions
   "translated_audio: mp3", -> Translate audio using S2T -> Transltor -> T2S
 }

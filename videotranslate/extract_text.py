@@ -4,18 +4,18 @@ from utils import set_logger
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import JSONFormatter, TextFormatter
 
-class TextExtractor:
+
+class YoutubeTextExtractor:
     
-    def __init__(self, output_dir: str, f_type: str="json"):
+    def __init__(self, f_type:str):
         self.f_type = f_type
-        if f_type=="txt":
+        if f_type=="Text":
             self.formatter = TextFormatter()
         else:
             self.formatter = JSONFormatter()
-        self.output_dir = output_dir
-        set_logger(output_dir, "extract_text.log")
+        
                  
-    def get_text(self, video_id: str):
+    def get_transcript_from_id(self, video_id: str):
         try:
             transcript = YouTubeTranscriptApi.get_transcript(video_id)    
             text_formatted = self.formatter.format_transcript(transcript, indent=4)
@@ -24,20 +24,22 @@ class TextExtractor:
             logging.error(e)
             logging.error(f"Failed to get text from {video_id}")
             return None
-    
-    def save_text(self, transcript: str, video_name: str):
+        
+        
+    def save_text(self, transcript: str, file_path: str):
         try:
-            file_name = os.path.join(self.output_dir, video_name + f".{self.f_type}")
-            if not os.path.exists(file_name) and transcript:         
-                with open(file_name, "w") as f:
+            # file_name = os.path.join(self.output_dir, video_name + f".{self.f_type}")
+            if not os.path.exists(file_path) and transcript:         
+                with open(file_path, "w") as f:
                     f.write(transcript)
-                    logging.info(f"Saved {file_name}")
+                    logging.info(f"Saved {file_path}")
             else:
-                logging.warning(f"Skipped saving video original text: {file_name}")
+                logging.warning(f"Skipped saving video original text: {file_path}")
         except Exception as e:
-            logging.error(f"Failed to save text to {file_name}")
-     
-    def translate_from_id(self, video_id: str, lang: str="en", target_lang: str="it"):
+            logging.error(f"Failed to save text to {file_path}")
+        
+    @staticmethod 
+    def translate_from_id(video_id: str, lang: str="en", target_lang: str="it"):
         try:
             transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
             transcript = transcript_list.find_transcript([lang])
