@@ -1,17 +1,22 @@
 [tool.poetry]
-name = "VideoTranslate"
+name = "videotranslate"
 version = "0.1.0"
 description = ""
-authors = ["waltermaffy <waltermaffy@yahoo.it>"]
+authors = ["bitwalt <walterm21@proton.me>"]
+license = "MIT"
+readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
-youtube-transcript-api = "^0.4.4"
-pytube = "^12.1.0"
+python = ">=3.12,<3.14"
+streamlit = "^1.40.2"
+openai = "^1.55.3"
+youtube-transcript-api = "^0.6.3"
+python-dotenv = "^1.0.1"
+deepl = "^1.20.0"
 
-[tool.poetry.dev-dependencies]
-pytest = "^5.2"
+[tool.poetry.group.dev.dependencies]
+pytube = "^15.0.0"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

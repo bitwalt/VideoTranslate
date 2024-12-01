@@ -6,15 +6,12 @@ RUN apt-get update \
 curl make 
 
 WORKDIR /app
-# RUN pip3 install poetry
-# COPY poetry.lock pyproject.toml /app/
-# RUN poetry config virtualenvs.create false 
-# RUN poetry install
-
-COPY requirements.txt /app
-RUN pip install -r requirements.txt
+RUN pip install poetry
+COPY poetry.lock pyproject.toml /app/  
+RUN poetry config virtualenvs.create false 
+RUN poetry install  
 
 COPY . /app
 EXPOSE 8501
 
-ENTRYPOINT [ "streamlit", "run", "videotranslate/start_streamlit.py" ]
+ENTRYPOINT [ "streamlit", "run", "app/video_translator.py" ]

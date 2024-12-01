@@ -1,88 +1,110 @@
 # Video Translator
 
-Repository with helper functions for translating videos from one language to another.
-
-Providing a stramlit UI with a web toolkit for downloading, translating, transcribing, generating video. 
-
-Created to disseminate educational resources on bitcoin.
-
-## Screenshot
-
-![ScreenShot](https://raw.github.com/waltermaffy/VideoTranslate/main/videotranslate/static/screenshot.png)
-
-## Run
-
-Using python environment (Docker in future)
-```
-$ pip install -r requirements.txt
-$ streamlit run start_streamlit.py
-```
-
-
-## Possible Outputs
-
-
--  "original_video: .mp4    -> Download video from url (youtube converter) or other libraries,
--  "original_captions_text": str -> Download caption from url or use Speech2Text AI model,
--  "original_audio": .mp3   -> Download from url or other libraries,              
--  "translated_video_captions: .mp4" -> Video file with translated captions overwritten,
--  "translated_video: .mp4" -> Video file with new generated audio translated from original,
-  "translated_captions: str" -> New translated captions
-  "translated_audio: mp3", -> Translate audio using S2T -> Transltor -> T2S
-}
-
-# Work in Progress -
-
+A Python application for translating videos from one language to another, with a Streamlit web interface for easy interaction.
 
 ## Features
 
-- Extract original captions from a video and save them in *JSON*  or *txt* (full-text). 
-- Download a video from Youtube and save it in *mp4* format.
-- Translate captions from one language to another 
+- Extract and translate video captions using multiple translation services:
+  - OpenAI GPT
+  - DeepL
+  - HuggingFace
+- Download videos from YouTube
+- Transcribe audio to text using OpenAI Whisper
+- Support for multiple input formats:
+  - YouTube URLs
+  - Local video files
+- Output formats:
+  - Text
+  - JSON (with timestamps)
 
+## Screenshot
 
-### Installation
+![ScreenShot](https://raw.github.com/waltermaffy/VideoTranslate/main/videotranslate/static/screenshot.png)
 
-An installation of Poetry is required. [Poetry](https://python-poetry.org/) is a tool for dependency management and packaging in Python. Take a look to [installations](https://python-poetry.org/docs/#osx--linux--bashonwindows-install-instructions).
+## Installation
 
-For OSx / linux / bashonwindows install:
+### Using Poetry (Recommended)
+
+1. Install Poetry if you haven't already:
 ```bash
-$ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 ```
 
-Dependencies used:
-- [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api)
-- [pytube](https://github.com/pytube/pytube)
-
-Install dependencies with:
+2. Install dependencies:
 ```bash
-$ poetry install
-```
-### Run the app
-
-Modify the `config.json` file to set the correct values for the following parameters:
-- `videos`: Youtube video IDs and video names
-- `formatter`: Formatter for the captions.
-    - `json` (with video timeslots reference)
-    - `txt` (full-text)
-- `output_folder`: Folder where the captions or videos will be saved.
-- `language_from`: Language of the captions. 
-- `language_from`: Translation language.
-  
-Run script with: 
-```bash
-$ cd videotranslate
-$ poetry run python main.py
+poetry install
 ```
 
+### Using pip
 
-### TODO
-- [ ] Use pre-trained AI model insted of *youtube_transcript_api* to translate video captions. 
-  Options: local environment (CPU) / cloud-services API, P2P GPU power.
+```bash
+pip install -r requirements.txt
+```
 
-- [ ]  Try to generate a speech for translated captions using *Text2Speech* models.
-    *References:* [DeepSpeech-Italian-Model](https://github.com/MozillaItalia/DeepSpeech-Italian-Model), [Woord](https://www.getwoord.com/),
-[TTS](https://github.com/mozilla/TTS)
+### Environment Variables
 
-- [ ] Adapt generated speech to original video timeslots 
+Create a `.env` file with the following API keys:
+```
+OPENAI_API_KEY=your_openai_key
+DEEPL_API_KEY=your_deepl_key
+HUGGINGFACE_API_TOKEN=your_huggingface_token
+```
+
+## Running the Application
+
+### Using Poetry
+
+```bash
+poetry run streamlit run app/video_translator.py
+```
+
+### Using Docker
+
+```bash
+make start
+```
+
+Or manually:
+
+```bash
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+The application will be available at `http://localhost:8501`
+
+## Configuration
+
+The application can be configured through `config.py`. Key settings include:
+
+- Translation service (OpenAI, DeepL, HuggingFace)
+- Default source and target languages
+- Output format (Text/JSON)
+- Model names and API configurations
+
+## Dependencies
+
+- Python >= 3.12
+- Streamlit
+- OpenAI
+- DeepL
+- youtube-transcript-api
+- pytube
+- python-dotenv
+
+## License
+
+MIT License - See LICENSE file for details
+
+## Contributing
+
+Feel free to open issues or submit pull requests. Please ensure tests pass before submitting PRs.
+
+## TODO
+
+- [ ] Implement pre-trained AI models for caption translation
+- [ ] Add Text-to-Speech synthesis for translated captions
+- [ ] Synchronize generated speech with video timestamps
+- [ ] Add support for more translation services
+- [ ] Improve error handling and user feedback
 

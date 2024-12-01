@@ -1,10 +1,15 @@
-docker-build:
-	docker build -t videotranslate .
+build:
+	docker-compose build --no-cache 
 
-docker-run:
-	docker run -d -p 8501:8501 videotranslate
+up:
+	docker-compose up -d  
 
+down:
+	docker-compose down  
 
 start:
-	make docker-build 
-	make docker-run 
+	make build 
+	make up  
+
+stop:
+	make down  

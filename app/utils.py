@@ -4,28 +4,8 @@ import os
 import json
 import re
 from urllib import parse
-import requests
-
-parse_price = lambda price: float(price.replace(',', ''))
-
-def get_btc_price() -> float:    
-    response = requests.get('https://api.coindesk.com/v1/bpi/currentprice.json')
-    data = response.json()
-    return data["bpi"]["USD"]["rate"].split('.')[0]
-
-
-
-def get_dollar_sat(btc_price) -> str: 
-    btc_float = parse_price(btc_price)
-    dollar_sat = dollar_to_sat(btc_float)
-    return str(dollar_sat)
-
-dollar_to_sat = lambda usd_price: int(1 / usd_price * (10 ** 8))
-
-def sats_to_dollar(tot_sats: int, dollar_in_sat: str):
-    return tot_sats / int(dollar_in_sat)
-
     
+
 def is_from_youtube(url:str) -> bool:
     youtube_regex = (
         r'(https?://)?(www\.)?'
@@ -55,6 +35,7 @@ def get_youtube_id(url:str) -> str:
             return query.path.split('/')[2]
     return ""
 
+
 def set_logger(output_dir: str, log_file: str):
     # set logger on log file and stdout
     log_dir = os.path.join(output_dir, "logs")
@@ -65,6 +46,7 @@ def set_logger(output_dir: str, log_file: str):
                         level=logging.INFO,
                         format='%(asctime)s:%(levelname)s:%(message)s')
     logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
+    
     
 def load_config(conf_file: str):
     with open(conf_file, "r") as f:

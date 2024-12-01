@@ -1,6 +1,5 @@
 import os, json
 import logging
-from utils import set_logger
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import JSONFormatter, TextFormatter
 
